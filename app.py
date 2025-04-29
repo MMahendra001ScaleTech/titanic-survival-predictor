@@ -53,14 +53,15 @@ def main():
         else:
             st.error(f'Prediction: Did not survive (Probability: {1-probability:.2%})')
         
-        # Display feature importance
+        # Display feature importance with proper data types
         st.subheader('Feature Importance')
-        feature_importance = pd.DataFrame({
+        feature_data = {
             'Feature': ['Passenger Class', 'Sex', 'Age', 'Siblings/Spouses', 
                        'Parents/Children', 'Fare', 'Embarkation Port'],
-            'Value': [pclass, sex, age, sibsp, parch, fare, embarked]
-        })
-        st.write(feature_importance)
+            'Value': [str(pclass), sex, str(age), str(sibsp), str(parch), str(fare), embarked]
+        }
+        feature_importance = pd.DataFrame(feature_data)
+        st.dataframe(feature_importance, use_container_width=True)
         
         # Add some visualizations
         st.subheader('Survival Statistics')
@@ -68,17 +69,19 @@ def main():
         
         with col1:
             st.write('Passenger Class Distribution')
-            st.bar_chart(pd.DataFrame({
+            class_data = pd.DataFrame({
                 'Class': [1, 2, 3],
                 'Survival Rate': [0.63, 0.47, 0.24]  # Approximate historical rates
-            }).set_index('Class'))
+            }).set_index('Class')
+            st.bar_chart(class_data)
         
         with col2:
             st.write('Gender Survival Rate')
-            st.bar_chart(pd.DataFrame({
+            gender_data = pd.DataFrame({
                 'Gender': ['Female', 'Male'],
                 'Survival Rate': [0.74, 0.19]  # Approximate historical rates
-            }).set_index('Gender'))
+            }).set_index('Gender')
+            st.bar_chart(gender_data)
 
 if __name__ == '__main__':
     main() 
